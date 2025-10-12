@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+		"tsBuildInfoFile": "dist/.tsbuildinfo",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "target": "ES6"
+  },
+  "include": ["src"]
+}
