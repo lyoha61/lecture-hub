@@ -5,13 +5,22 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { EVENTS } from '@project/shared/events';
+import {
+  ClientToServerEvents,
+  EVENTS,
+  ServerToClientEvents,
+} from '@project/shared/events';
 import { randomBytes } from 'crypto';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: 'http://localhost:5173',
+    methods: '*',
+  },
+})
 export class LectureGateway {
   @WebSocketServer()
-  server: Server;
+  server: Server<ClientToServerEvents, ServerToClientEvents>;
   private readonly logger = new Logger(LectureGateway.name);
 
   private lectures = new Map<

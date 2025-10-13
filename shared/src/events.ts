@@ -6,3 +6,12 @@ export const EVENTS = {
 		JOINED: 'lecture:joined'
 	}
 } as const;
+
+
+export type ServerToClientEvents = {
+	[EVENTS.LECTURE.CREATED]: (data: { lectureId: string }) => void;
+}
+
+export type ClientToServerEvents = {
+	[EVENTS.LECTURE.CREATE]: () => void;
+}
