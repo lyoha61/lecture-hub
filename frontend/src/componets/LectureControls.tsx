@@ -6,19 +6,20 @@ import StartIcon from '../assets/play.svg?react';
 import PauseIcon from '../assets/pause.svg?react';
 import CopyIcon from '../assets/copy.svg?react';
 
-export const LectureControls: React.FC = () => {
+export const LectureControls: React.FC<{ setStream: (stream: MediaStream | null ) => void }> = ({ setStream }) => {
 	const { socket } = useSocket();
 	const [isLectureStarted, setIsLectureStarted] = useState(false);
 	const { createLecture, onLectureCreated } = useLectureSocket();
 	const [lectureId, setLectureId] = useState<string | null>(null);
 	const [copied, setCopied] = useState(false);
 
-	const handleStartLecture = () => {
+	const handleStartLecture = async () => {
 		if (!socket) return;
 
 		if (isLectureStarted) {
 			setIsLectureStarted(false);
 			setLectureId(null);
+			setStream(null);
 			return
 		}
 		
@@ -27,6 +28,14 @@ export const LectureControls: React.FC = () => {
 			setLectureId(id)
 		})
 		setIsLectureStarted(true);
+
+
+		try {
+			const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+			setStream(stream);
+		} catch (err) {
+			console.error("Ошибка при запуске трансляции", err);
+		}
 	}
 
 	const handleCopy = () => {

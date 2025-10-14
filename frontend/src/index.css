@@ -1,1 +1,38 @@
 @import "tailwindcss";
+
+
+.role-card {
+	@apply flex flex-col items-center justify-between gap-5 h-[80%] border-1 border-[#E5E7EB] rounded-xl bg-[#ffffff] p-8 shadow-lg overflow-auto;
+}
+
+.role-icon-container {
+	@apply flex justify-center items-center aspect-square rounded-full w-[20%] bg-[#1F2937];
+}
+
+.role-icon {
+	@apply w-[50%] text-[#ffffff] fill-current;
+}
+
+.role-title {
+	@apply text-3xl
+}
+
+.role-info {
+	@apply text-center;
+}
+
+.role-button {
+	@apply bg-[#1F2937] text-[#ffffff] rounded-2xl w-full py-5 cursor-pointer font-bold;
+}
+
+.role-features {
+	@apply flex flex-col items-center
+}
+
+.role-feature-item {
+	@apply flex gap-2 text-[#6C7280] text-xs text-center;
+}
+
+.role-feature-icon {
+	@apply w-4 fill-current;
+}
