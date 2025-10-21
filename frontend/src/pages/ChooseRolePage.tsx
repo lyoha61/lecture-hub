@@ -9,7 +9,7 @@ import MessagesIcon from '../assets/messages.svg?react';
 import ClockIcon from '../assets/clock.svg?react';
 
 
-export const ChooseRole: React.FC = () => {
+export const ChooseRolePage: React.FC = () => {
 	const navigate = useNavigate()
 
 	return (

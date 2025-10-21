@@ -1,17 +1,18 @@
+import type { ClientToServerEvents, ServerToClientEvents } from "@project/shared/events";
 import { createContext, useState, useEffect, useContext } from "react";
 import { io, type Socket } from "socket.io-client";
 
 interface SocketContextValue {
-	socket: Socket | null;
+	socket: Socket<ServerToClientEvents, ClientToServerEvents> | null;
 }
 
 const SokcetContext = createContext<SocketContextValue>({ socket: null });
 
 export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const [socket, setSocket] = useState<Socket | null>(null);
+	const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
 
 	useEffect(() => {
-		const s = io("http://localhost:3000");
+		const s: Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:3000");
 		setSocket(s);
 
 		return () => {

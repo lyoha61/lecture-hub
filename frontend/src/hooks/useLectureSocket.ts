@@ -9,10 +9,16 @@ export function useLectureSocket() {
 	}
 
 	const onLectureCreated = (cb: (lectureId: string) => void) => {
-		socket?.on(EVENTS.LECTURE.CREATED, (data: { lectureId: string }) => {
+		socket?.on(EVENTS.LECTURE.CREATED, (data) => {
 			cb(data.lectureId)
 		})
 	}
 
-	return { createLecture, onLectureCreated };
+	const joinLecture = (lectureId: string) => {
+		socket?.emit(EVENTS.LECTURE.JOIN, { lectureId }, (response) => {
+			if (!response.success) alert(response.error ?? "Лекция не найдена")
+		});
+	}
+
+	return { createLecture, onLectureCreated, joinLecture };
 }

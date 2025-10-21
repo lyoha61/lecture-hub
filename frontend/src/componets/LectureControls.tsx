@@ -48,7 +48,7 @@ export const LectureControls: React.FC<{ setStream: (stream: MediaStream | null 
 	//  #TODO: сделать сообщение об успешном копировании
 
 	return (
-		<div className="bg-[#ffffff] border-2 border-[#E5E7EB] rounded-xl w-[30%] h-full px-6">
+		<div className="lecture-panel">
 			<div className="flex flex-col py-6 gap-5 border-b-1 border-[#E5E7EB]">
 				<h2 className='text-xl'>Элементы управления</h2>
 				<button 

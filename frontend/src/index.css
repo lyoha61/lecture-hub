@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
-
+.lecture-panel {
+	@apply bg-[#ffffff] border-2 border-[#E5E7EB] rounded-xl w-[30%] h-full px-6;
+}
+ 
 .role-card {
-	@apply flex flex-col items-center justify-between gap-5 h-[80%] border-1 border-[#E5E7EB] rounded-xl bg-[#ffffff] p-8 shadow-lg overflow-auto;
+	@apply flex flex-col items-center justify-between gap-5 h-[85%] border-1 border-[#E5E7EB] rounded-xl bg-[#ffffff] p-8 shadow-lg overflow-auto;
 }
 
 .role-icon-container {
@@ -26,7 +29,7 @@
 }
 
 .role-features {
-	@apply flex flex-col items-center
+	@apply flex flex-col items-center gap-2
 }
 
 .role-feature-item {

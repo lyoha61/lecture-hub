@@ -44,8 +44,20 @@ export class LectureGateway {
   }
 
   @SubscribeMessage(EVENTS.LECTURE.JOIN)
-  handleMessage(client: Socket, payload: { lecture }): object {
-    return { client, payload };
+  handleMessage(client: Socket, payload: { lectureId: string }) {
+    const lecture = this.lectures.get(payload.lectureId);
+    if (!lecture) {
+      this.logger.warn(`Lecture not found: ${payload.lectureId}`);
+      return { success: false, error: 'Lecture not found' };
+    }
+    lecture.students.push(client);
+    this.logger.log(`Student ${client.id} joined lecture ${payload.lectureId}`);
+
+    client.emit(EVENTS.LECTURE.JOINED, { lectureId: payload.lectureId });
+    lecture.lecturer.emit(EVENTS.LECTURE.STUDENT_JOINED, {
+      studentId: client.id,
+      lectureId: payload.lectureId,
+    });
   }
 
   @SubscribeMessage(EVENTS.LECTURE.CREATE)
