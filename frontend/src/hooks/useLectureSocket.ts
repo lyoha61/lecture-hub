@@ -1,5 +1,6 @@
+import type { StudentJoinedCb, StudentsCallback } from "@project/shared/types";
 import { useSocket } from "../services/SocketContext";
-import { EVENTS } from "@project/shared/events";
+import { EVENTS } from '@project/shared/events';
 
 export function useLectureSocket() {
 	const { socket } = useSocket();
@@ -20,5 +21,15 @@ export function useLectureSocket() {
 		});
 	}
 
-	return { createLecture, onLectureCreated, joinLecture };
+	const connectedStudents = (lectureId: string, cb: StudentsCallback) => {
+		socket?.emit(EVENTS.LECTURE.STUDENTS, { lectureId }, cb)
+	}
+
+	const onStudentJoined = ((cb: StudentJoinedCb) => {
+		socket?.on(EVENTS.LECTURE.STUDENT_JOINED, (response) => {
+			cb({ id: response.studentId });
+		})
+	})
+
+	return { createLecture, onLectureCreated, joinLecture,  connectedStudents, onStudentJoined};
 }

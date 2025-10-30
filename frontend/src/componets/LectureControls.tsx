@@ -5,13 +5,23 @@ import { useLectureSocket } from '../hooks/useLectureSocket';
 import StartIcon from '../assets/play.svg?react';
 import PauseIcon from '../assets/pause.svg?react';
 import CopyIcon from '../assets/copy.svg?react';
+import type { Student } from '@project/shared/types';
 
 export const LectureControls: React.FC<{ setStream: (stream: MediaStream | null ) => void }> = ({ setStream }) => {
 	const { socket } = useSocket();
 	const [isLectureStarted, setIsLectureStarted] = useState(false);
-	const { createLecture, onLectureCreated } = useLectureSocket();
+	const { createLecture, onLectureCreated, connectedStudents, onStudentJoined } = useLectureSocket();
 	const [lectureId, setLectureId] = useState<string | null>(null);
 	const [copied, setCopied] = useState(false);
+	const [students, setStudents] = useState<Student[]>([]);
+
+	useEffect(() => {
+		if (!lectureId || !socket) return;
+
+		onStudentJoined((student) => {
+			setStudents(prev => [...prev, student]);
+		})
+	}, [socket, lectureId]);
 
 	const handleStartLecture = async () => {
 		if (!socket) return;
@@ -23,10 +33,15 @@ export const LectureControls: React.FC<{ setStream: (stream: MediaStream | null 
 			return
 		}
 		
-		createLecture()
-		onLectureCreated((id) => {
-			setLectureId(id)
-		})
+		createLecture();
+		onLectureCreated((lectureId) => {
+			setLectureId(lectureId);
+
+			connectedStudents(lectureId, (response) => {
+				setStudents(response.students);
+			});
+			
+		});
 		setIsLectureStarted(true);
 
 
@@ -115,6 +130,15 @@ export const LectureControls: React.FC<{ setStream: (stream: MediaStream | null 
 			
 			<div>
 				<h3>Подключенные студенты</h3>
+				{students && students.length > 0 ? (
+					<ul>
+						{students.map((student) => (
+							<li>{student.id}</li>
+						))}
+					</ul>
+				) : (
+					"Нет подключенных студентов"
+					)}
 			</div>
 
 		</div>
